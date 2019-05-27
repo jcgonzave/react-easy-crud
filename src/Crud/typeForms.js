@@ -11,6 +11,7 @@ import {
   Upload,
   Cascader,
 } from 'antd';
+import { RichText } from './components/types';
 
 const getForm = (field, getFieldDecorator) => {
   const globalOptions = {
@@ -21,7 +22,6 @@ const getForm = (field, getFieldDecorator) => {
     path.some(
       option => option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
-
   switch (field.type) {
     case 'date': {
       return getFieldDecorator(field.key, {
@@ -66,7 +66,11 @@ const getForm = (field, getFieldDecorator) => {
         ...globalOptions,
         rules: field.rules,
       })(
-        <Select disabled={field.disabled || false}>
+        <Select
+          disabled={field.disabled || false}
+          mode={field.mode || false}
+          allowClear
+        >
           {Object.keys(field.options).map(keyOption => (
             <Select.Option key={keyOption} value={keyOption}>
               {field.options[keyOption]}
@@ -86,6 +90,12 @@ const getForm = (field, getFieldDecorator) => {
         ...globalOptions,
         rules: field.rules,
       })(<Input.TextArea disabled={field.disabled || false} />);
+    }
+    case 'rich': {
+      return getFieldDecorator(field.key, {
+        ...globalOptions,
+        rules: field.rules,
+      })(<RichText />);
     }
     case 'file': {
       return getFieldDecorator(field.key, {
